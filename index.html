@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN"> 
+
+
+<head>
+<meta charset="UTF-8">
+<title>蒙德冒险日记</title>
+
+<style>
+*{margin: 0;
+    padding: 0;
+    box-sizing: border-box;}
+
+body{background: rgba(128, 128, 128, 0.036);
+    color: azure;
+    font-family: "思源宋体","宋体";
+    padding: 40px;
+    max-width: 900px;
+    margin: 0 auto;}
+
+#storybox{background-color:rgba(255, 255, 255, 0.395) ;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+        font-size: 18px;
+        line-height: 1.8;
+        min-height: 160px;
+        white-space: pre-line;}
+
+#optionbox{margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;}
+            
+</style>
+
+
+</head>
+
+
+<body>
+<div id = "storybox"></div>
+<div id="optionbox"></div>
+
+
+<script src="data.js"></script>
+
+
+
+<script>
+const textdom = document.getElementById("storybox")
+const optiondom = document.getElementById("optionbox")
+
+let nownode = "start"
+
+
+function render(nodekey){
+    const node = gamedata.story[nodekey];
+
+    if (!node){
+        textdom.innerText = "「剧情节点丢失，你被耍了（啊哈哈哈哈哈太欢愉了）" + nodekey + "」";
+        optiondom.innerHTML = "";
+        return;
+        }
+    textdom.innerText = node.text;
+    optiondom.innerHTML = "";
+
+    node.option.forEach(optkey => {
+        const btn = document.createElement("button");
+        btn.innerText = optkey;
+
+        btn.onclick = function(){
+        render(optkey);
+        };
+
+        optiondom.appendChild(btn)
+    });
+
+
+}
+
+
+
+window.onload = function(){
+    render(nownode);
+}
+</script>
+
+
+</body>
+
+
+
+
+
+</html>
