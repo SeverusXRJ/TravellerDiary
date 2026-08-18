@@ -158,7 +158,7 @@ function render(nodekey){
         return;
         }
 
-    if (node.option.length === 1 && keylist.includes(node.option[0])){
+    if (node.option.length === 1 && !keylist.includes(node.option[0])){
         const btn1 = document.createElement("button_next");
         btn1.innerText = "继续"
         optiondom.appendChild(btn1)
