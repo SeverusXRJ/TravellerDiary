@@ -7,31 +7,119 @@
 <title>蒙德冒险日记</title>
 
 <style>
-*{margin: 0;
+*{
+    margin: 0;
     padding: 0;
-    box-sizing: border-box;}
+    box-sizing: border-box;
+}
 
-body{background: rgba(128, 128, 128, 0.036);
-    color: azure;
-    font-family: "思源宋体","宋体";
+body{
+    background-color:#0d0d0dbe;
+    color: #e0e0e0;
+    font-family: "Courier New","FangSong", "STFangsong", "SimSun",seri，monospace;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     padding: 40px;
     max-width: 900px;
-    margin: 0 auto;}
+    margin: 0 auto;
+}
 
-#storybox{background-color:rgba(255, 255, 255, 0.395) ;
+#game{
+    max-width: 900px;
+    width: 100%;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 12px;/* 圆角 */
+    padding: 30px 28px;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+
+}
+
+
+#title{
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #8ab4f8;
+    text-align: center;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: #e0e0e0;
+    letter-spacing: 4px;
+
+
+}
+
+
+
+#storybox{background-color:rgba(200, 200, 200, 0.082) ;
         padding: 30px;
         border-radius: 12px;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
-        font-size: 18px;
+        font-weight: bold;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        font-size: 1.4rem;
+        letter-spacing: 0.15rem;
+        color: #8ab4f8;
         line-height: 1.8;
         min-height: 160px;
         white-space: pre-line;}
 
+
+
 #optionbox{margin-top: 30px;
+            font-family: "Courier New", "FangSong", "仿宋_GB2312", "STFangsong", "华文仿宋", "SimSun",serif;
+            border-radius: 5px;
             display: flex;
             flex-direction: column;
             gap: 12px;}
-            
+
+.optiondom-btn{
+    background-color: #2a2a2a;
+    border:3px solid #555 ;
+    border-radius:40px ;
+    font-size: 1rem;
+    font-family: "Courier New","FangSong","SimSUn",serif;
+    letter-spacing: 0.5px;
+    color: #8ab4f8;
+    padding: 12px 18px;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s,border-color 0.15;
+    }
+
+.optiondom-btn1{
+    background-color: #2a2a2a;
+    border:3px solid #555 ;
+    border-radius:40px ;
+    font-size: 1rem;
+    font-family: "Courier New","FangSong","SimSUn",serif;
+    letter-spacing: 0.5px;
+    color: #8ab4f8;
+    padding: 12px 18px;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s,border-color 0.15;
+    }
+    
+
+#status{
+    margin-top: 20px;
+    font-size: 0.75rem;
+    background-color: rgba(255, 255, 255, 0);
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    justify-content: space-between; 
+    
+    
+}
+
+    
+    
+
+.tag{color: #3a6b9b;} 
 </style>
 
 
@@ -39,8 +127,11 @@ body{background: rgba(128, 128, 128, 0.036);
 
 
 <body>
-<div id = "storybox"></div>
+<div id = game><div id = "storybox"></div>
 <div id="optionbox"></div>
+<div id="status"></div>
+<div id="title"></div>
+</div>
 
 
 <script src="data.js"></script>
@@ -51,6 +142,10 @@ body{background: rgba(128, 128, 128, 0.036);
 const textdom = document.getElementById("storybox")
 const optiondom = document.getElementById("optionbox")
 
+let keylist = ["一起炸鱼，快乐翻倍","loading................",
+"等等吧","那我关掉再开","想想","我要喝菊花枸杞茶！","当然","购买","开！"]
+
+
 let nownode = "start"
 
 
@@ -58,18 +153,26 @@ function render(nodekey){
     const node = gamedata.story[nodekey];
 
     if (!node){
-        textdom.innerText = "「剧情节点丢失，你被耍了（啊哈哈哈哈哈太欢愉了）" + nodekey + "」";
+        textdom.innerText = "「剧情节点丢失，你被耍了（啊哈哈哈哈哈太欢愉了）[" + nodekey + "]」";
         optiondom.innerHTML = "";
         return;
         }
+
+    if (node.option.length === 1 && keylist.includes(node.option[0])){
+        const btn1 = document.createElement("button_next");
+        btn1.innerText = "继续"
+        optiondom.appendChild(btn1)
+    }
+        
     textdom.innerText = node.text;
     optiondom.innerHTML = "";
 
     node.option.forEach(optkey => {
         const btn = document.createElement("button");
         btn.innerText = optkey;
+        btn.className = "optiondom-btn"
 
-        btn.onclick = function(){
+    btn.onclick = function(){
         render(optkey);
         };
 
